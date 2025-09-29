@@ -8,7 +8,7 @@ const options = {
     },
 };
 
-const getTopRatedMovies = async ({ page }) => {
+const getTopRatedMovies = async (page) => {
     const url = `https://api.themoviedb.org/3/movie/top_rated?language=ko&page=${page}`;
 
     try {
