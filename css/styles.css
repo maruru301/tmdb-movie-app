@@ -11,6 +11,7 @@ a {
     color: black;
 }
 
+/* header */
 #header {
     display: flex;
     align-items: center;
@@ -19,9 +20,14 @@ a {
     border-bottom: 1px solid #dbdada;
 }
 
-#logo {
+#logo a {
     font-size: 2rem;
     font-weight: 700;
+}
+
+#logo:hover {
+    transform: scale(1.05);
+    transition: all 0.1s ease-in;
 }
 
 #search-bar {
@@ -52,4 +58,52 @@ a {
 
 #search-btn:active {
     background-color: #b5b5b5;
+}
+
+/* main */
+#main {
+    margin: 0 auto;
+    padding: 0 8rem;
+}
+
+.card-container h2 {
+    padding-top: 3rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.card-list {
+    margin: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+}
+
+.movie-card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.movie-poster {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.2s ease-in;
+}
+
+.movie-poster:hover {
+    transform: scale(1.05);
+}
+
+.movie-title {
+    position: absolute;
+    bottom: 0;
+    font-weight: 500;
+    width: 100%;
+    padding: 1rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
 }

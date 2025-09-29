@@ -1,5 +1,8 @@
 import config from './apikey.js';
 
+const moviePosters = document.querySelectorAll('.movie-poster');
+const movieTitles = document.querySelectorAll('.movie-title');
+
 const options = {
     method: 'GET',
     headers: {
@@ -15,9 +18,12 @@ const getTopRatedMovies = async (page) => {
         const res = await fetch(url, options);
         const data = await res.json();
 
-        data.results.forEach((movie) => {
-            console.log(`\nTitle: ${movie.title} (${movie.original_title}) · ${movie.release_date}`);
-            console.log(`Overview: ${movie.overview}`);
+        data.results.forEach((movie, idx) => {
+            if (movieTitles[idx]) movieTitles[idx].textContent = movie.title;
+            if (moviePosters[idx]) {
+                moviePosters[idx].src = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
+                moviePosters[idx].alt = movie.title;
+            }
         });
     } catch (err) {
         console.error(err);
