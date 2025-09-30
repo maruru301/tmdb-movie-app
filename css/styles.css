@@ -14,6 +14,8 @@ a {
 body {
     position: relative;
     height: 100%;
+    background-color: black;
+    color: white;
 }
 
 /* 이미지 선택, 드래그 막기 */
@@ -42,6 +44,7 @@ img {
 #logo a {
     font-size: 2rem;
     font-weight: 700;
+    color: white;
 }
 
 #logo:hover {
