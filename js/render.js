@@ -9,6 +9,9 @@ export const renderMovies = (data, container) => {
             <div class="movie-card" data-id="${movie.id}">
                 <img class="movie-poster" src="${posterPath}" alt="${movie.title}" />
                 <div class="movie-title">${movie.title}</div>
+                <button class="bookmark-btn">
+                    <img class="bookmark-icon" src="assets/icon-bookmark-empty.svg" />
+                </button>
             </div>
         `;
         })

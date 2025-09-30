@@ -37,20 +37,31 @@ searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') searchBtn.click();
 });
 
-// 모달 창
+// 북마크 + 모달
 cardList.addEventListener('click', async (e) => {
     const movieCard = e.target.closest('.movie-card'); // 이벤트 위임
     if (!movieCard) return;
 
-    const movieId = movieCard.dataset.id;
+    // 북마크
+    const bookmarkBtn = e.target.closest('.bookmark-btn');
+    if (bookmarkBtn) {
+        const bookmarkIcon = bookmarkBtn.querySelector('.bookmark-icon');
 
+        bookmarkBtn.classList.toggle('active'); // 클래스 토글
+
+        bookmarkIcon.src = bookmarkBtn.classList.contains('active')
+            ? 'assets/icon-bookmark-filled.svg'
+            : 'assets/icon-bookmark-empty.svg';
+
+        return; // 모달 띄우지 않고 종료
+    }
+
+    // 모달창
+    const movieId = movieCard.dataset.id;
     const movieData = await fetchMovieDetails(movieId); // 영화 상세 데이터 가져오기
     const parsedMovieData = parseMovieData(movieData);
 
     modal.classList.remove('hidden');
-
-    console.log(`${parsedMovieData.posterPath}`);
-
     renderModal(parsedMovieData, modal);
 });
 
