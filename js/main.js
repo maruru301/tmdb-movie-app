@@ -1,11 +1,12 @@
 import { fetchMovieDetails, fetchSearchMovies, fetchTopRatedMovies } from './api.js';
+import { renderModal, renderMovies } from './render.js';
 
 import { parseMovieData } from './utils/movieParser.js';
-import { renderMovies } from './render.js';
 
 const cardList = document.querySelector('.card-list');
 const searchInput = document.querySelector('#search-input');
 const searchBtn = document.querySelector('#search-btn');
+const modal = document.querySelector('.modal');
 const DEFAULT_PAGE = 1;
 
 const init = async () => {
@@ -42,12 +43,22 @@ cardList.addEventListener('click', async (e) => {
     if (!movieCard) return;
 
     const movieId = movieCard.dataset.id;
-    console.log('영화 id: ', movieId);
 
     const movieData = await fetchMovieDetails(movieId); // 영화 상세 데이터 가져오기
     const parsedMovieData = parseMovieData(movieData);
 
-    console.log(parsedMovieData);
+    modal.classList.remove('hidden');
+
+    console.log(`${parsedMovieData.posterPath}`);
+
+    renderModal(parsedMovieData, modal);
+});
+
+// 닫기 버튼 또는 modal 영역 클릭 시 모달창 닫기
+modal.addEventListener('click', (e) => {
+    if (e.target === modal || e.target.classList.contains('modal-close')) {
+        modal.classList.add('hidden');
+    }
 });
 
 init();
