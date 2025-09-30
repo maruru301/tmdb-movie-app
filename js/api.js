@@ -9,8 +9,8 @@ const options = {
 };
 
 // Top Rated Movie List
-export const getTopRatedMovies = async (page) => {
-    const url = `https://api.themoviedb.org/3/movie/top_rated?language=en&page=${page}`;
+export const fetchTopRatedMovies = async (page) => {
+    const url = `https://api.themoviedb.org/3/movie/top_rated?language=ko&page=${page}`;
 
     try {
         const res = await fetch(url, options);
@@ -24,7 +24,7 @@ export const getTopRatedMovies = async (page) => {
 
 // Search Movie
 export const fetchSearchMovies = async (query) => {
-    const url = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&language=en`;
+    const url = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&language=ko`;
 
     try {
         const res = await fetch(url, options);
@@ -33,5 +33,19 @@ export const fetchSearchMovies = async (query) => {
         return data.results;
     } catch (err) {
         console.error('Search Movies API Error: ', err);
+    }
+};
+
+// Movie Details
+export const fetchMovieDetails = async (movieId) => {
+    const url = `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=credits&language=ko`;
+
+    try {
+        const res = await fetch(url, options);
+        const data = await res.json();
+
+        return data; // 단일 영화 객체
+    } catch (err) {
+        console.error('Movie Detail API Error: ', err);
     }
 };
