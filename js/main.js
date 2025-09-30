@@ -1,5 +1,6 @@
 import { fetchMovieDetails, fetchSearchMovies, fetchTopRatedMovies } from './api.js';
 
+import { parseMovieData } from './utils/movieParser.js';
 import { renderMovies } from './render.js';
 
 const cardList = document.querySelector('.card-list');
@@ -33,19 +34,6 @@ searchBtn.addEventListener('click', async () => {
 // 검색창에서 Enter 입력 시 검색
 searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') searchBtn.click();
-});
-
-// movie details 데이터 변환
-const parseMovieData = (data) => ({
-    backdropPath: data.backdrop_path,
-    title: data.title,
-    originalTitle: data.original_title,
-    genres: data.genres?.map((g) => g.name) ?? [],
-    overview: data.overview,
-    releaseDate: data.release_date,
-    runtime: data.runtime,
-    voteAverage: data.vote_average,
-    director: data.credits.crew.find((p) => p.job === 'Director')?.name ?? '정보 없음',
 });
 
 // 모달 창
