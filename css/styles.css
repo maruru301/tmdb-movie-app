@@ -43,19 +43,21 @@ img {
 
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid #dbdada;
+    background-color: rgba(0, 0, 0, 0.9);
 }
 
 #header-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 2rem;
+    padding: 1.2rem;
     border-bottom: 1px solid #dbdada;
 }
 
 #nav {
-    padding: 0.5rem 1rem;
+    padding: 0.2rem 1rem;
+    display: flex;
+    justify-content: center;
 }
 
 .bookmark-filter-btn {
@@ -69,7 +71,9 @@ img {
 
 .bookmark-filter-btn:hover {
     border-radius: 5px;
-    color: rgba(43, 247, 87);
+    color: #f9ff3f;
+    font-weight: 700;
+    transform: translateY(-2px);
 }
 
 #logo a {
@@ -85,7 +89,7 @@ img {
 
 #search-bar {
     display: flex;
-    gap: 5px;
+    gap: 10px;
 }
 
 #search-input {
@@ -93,24 +97,26 @@ img {
     width: 300px;
     padding: 0 1rem;
     border: 1px solid #b5b5b5;
+    background-color: #303030;
     border-radius: 5px;
+    color: white;
 }
 
 #search-btn {
     height: 40px;
     width: 40px;
-    background-color: white;
+    background-color: #303030;
     border: 1px solid #b5b5b5;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #search-btn:hover {
-    background-color: #dbdada;
+    background-color: #707070;
 }
 
 #search-btn:active {
-    background-color: #b5b5b5;
+    background-color: #8f8f8f;
 }
 /* main */
 #main {
@@ -118,8 +124,15 @@ img {
     padding: 0 8rem;
 }
 
+.card-container {
+    background-color: #303030;
+    margin: 3rem 0;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
 .card-container h2 {
-    padding-top: 3rem;
+    padding-top: 1rem;
     font-size: 1.5rem;
     font-weight: 700;
 }
@@ -128,7 +141,7 @@ img {
     margin: 2rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.25rem;
+    gap: 1.5rem;
 }
 
 .movie-card {
@@ -136,7 +149,8 @@ img {
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
-    overflow: hidden;
+    max-width: 300px;
+    height: 100%;
 }
 
 .movie-poster {
@@ -149,10 +163,15 @@ img {
 .movie-poster:hover {
     transform: scale(1.05);
 }
-
 .movie-title {
+    display: none;
+}
+
+.movie-card-box:hover .movie-title {
+    display: block;
     position: absolute;
     bottom: 0;
+    left: 0;
     font-size: 1rem;
     font-weight: 500;
     width: 100%;
@@ -163,15 +182,18 @@ img {
 
 .bookmark-btn {
     position: absolute;
-    top: 0.5rem;
+    top: 0;
     left: 0.3rem;
     border: none;
-    background-color: inherit;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0 0.5rem 0.2rem 0.5rem;
+    border-end-start-radius: 5px;
+    border-end-end-radius: 5px;
     cursor: pointer;
 }
 
 .bookmark-icon {
-    width: 2.5rem;
+    width: 1.5rem;
 }
 
 /* modal */
