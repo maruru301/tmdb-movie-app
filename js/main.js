@@ -9,6 +9,11 @@ const searchBtn = document.querySelector('#search-btn');
 const modal = document.querySelector('.modal');
 const DEFAULT_PAGE = 1;
 
+// 헤더 높이만큼 body를 아래로 밀어줌
+const header = document.querySelector('header');
+const headerHeight = header.offsetHeight;
+document.body.style.paddingTop = `${headerHeight}px`;
+
 const init = async () => {
     try {
         const movies = await fetchTopRatedMovies(DEFAULT_PAGE);
