@@ -47,37 +47,34 @@ cardList.addEventListener('click', async (e) => {
     const movieCard = e.target.closest('.movie-card'); // 이벤트 위임
     if (!movieCard) return;
 
-    const movieId = movieCard.dataset.id;
+    const movieId = String(movieCard.dataset.id);
 
     // 북마크
     const bookmarkBtn = e.target.closest('.bookmark-btn');
     if (bookmarkBtn) {
         const bookmarkIcon = bookmarkBtn.querySelector('.bookmark-icon');
-        bookmarkBtn.classList.toggle('active'); // 클래스 토글
 
         let idArr = JSON.parse(localStorage.getItem('id')) || [];
 
-        if (bookmarkBtn.classList.contains('active')) {
+        if (!idArr.includes(movieId)) {
             // 북마크 추가
-            if (!idArr.includes(movieId)) {
-                // 중복 방지
-                idArr.push(movieId);
-                localStorage.setItem('id', JSON.stringify(idArr));
-            }
+            idArr.push(movieId);
 
             bookmarkIcon.src = 'assets/icon-bookmark-filled.svg';
+            bookmarkBtn.classList.add('active');
+
             console.log('북마크 추가');
         } else {
             // 북마크 해제
-            let idArr = JSON.parse(localStorage.getItem('id')) || [];
-
             idArr = idArr.filter((id) => id !== movieId);
-            localStorage.setItem('id', JSON.stringify(idArr));
 
             bookmarkIcon.src = 'assets/icon-bookmark-empty.svg';
+            bookmarkBtn.classList.remove('active');
+
             console.log('북마크 해제');
         }
 
+        localStorage.setItem('id', JSON.stringify(idArr));
         return; // 모달 띄우지 않고 종료
     }
 

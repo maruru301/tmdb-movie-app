@@ -1,16 +1,21 @@
 // movie card 렌더링
 export const renderMovies = (data, container) => {
+    let idArr = JSON.parse(localStorage.getItem('id')) || [];
+
     // 모든 카드 HTML 문자열 생성
     const movieCardsHTML = data
         .map((movie) => {
             const posterPath = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
+            const isBookmarked = idArr.includes(String(movie.id));
 
             return `
             <div class="movie-card" data-id="${movie.id}">
                 <img class="movie-poster" src="${posterPath}" alt="${movie.title}" />
                 <div class="movie-title">${movie.title}</div>
-                <button class="bookmark-btn">
-                    <img class="bookmark-icon" src="assets/icon-bookmark-empty.svg" />
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}">
+                    <img class="bookmark-icon" src="assets/${
+                        isBookmarked ? 'icon-bookmark-filled.svg' : 'icon-bookmark-empty.svg'
+                    }"  />
                 </button>
             </div>
         `;
