@@ -47,22 +47,41 @@ cardList.addEventListener('click', async (e) => {
     const movieCard = e.target.closest('.movie-card'); // 이벤트 위임
     if (!movieCard) return;
 
+    const movieId = movieCard.dataset.id;
+
     // 북마크
     const bookmarkBtn = e.target.closest('.bookmark-btn');
     if (bookmarkBtn) {
         const bookmarkIcon = bookmarkBtn.querySelector('.bookmark-icon');
-
         bookmarkBtn.classList.toggle('active'); // 클래스 토글
 
-        bookmarkIcon.src = bookmarkBtn.classList.contains('active')
-            ? 'assets/icon-bookmark-filled.svg'
-            : 'assets/icon-bookmark-empty.svg';
+        let idArr = JSON.parse(localStorage.getItem('id')) || [];
+
+        if (bookmarkBtn.classList.contains('active')) {
+            // 북마크 추가
+            if (!idArr.includes(movieId)) {
+                // 중복 방지
+                idArr.push(movieId);
+                localStorage.setItem('id', JSON.stringify(idArr));
+            }
+
+            bookmarkIcon.src = 'assets/icon-bookmark-filled.svg';
+            console.log('북마크 추가');
+        } else {
+            // 북마크 해제
+            let idArr = JSON.parse(localStorage.getItem('id')) || [];
+
+            idArr = idArr.filter((id) => id !== movieId);
+            localStorage.setItem('id', JSON.stringify(idArr));
+
+            bookmarkIcon.src = 'assets/icon-bookmark-empty.svg';
+            console.log('북마크 해제');
+        }
 
         return; // 모달 띄우지 않고 종료
     }
 
     // 모달창
-    const movieId = movieCard.dataset.id;
     const movieData = await fetchMovieDetails(movieId); // 영화 상세 데이터 가져오기
     const parsedMovieData = parseMovieData(movieData);
 
