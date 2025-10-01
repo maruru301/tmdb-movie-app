@@ -5,7 +5,9 @@ export const renderMovies = (data, container) => {
     // 모든 카드 HTML 문자열 생성
     const movieCardsHTML = data
         .map((movie) => {
-            const posterPath = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
+            const posterPath = movie.poster_path
+                ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                : 'https://placehold.co/200x300?text=No+Image&bg=cccccc&fg=555555';
             const isBookmarked = idArr.includes(String(movie.id));
 
             return `
@@ -27,7 +29,9 @@ export const renderMovies = (data, container) => {
 
 // modal 렌더링
 export const renderModal = (movie, container) => {
-    const posterPath = `https://image.tmdb.org/t/p/w200${movie.posterPath}`;
+    const posterPath = movie.posterPath
+        ? `https://image.tmdb.org/t/p/w200${movie.posterPath}`
+        : 'https://placehold.co/200x300?text=No+Image&bg=cccccc&fg=555555';
 
     container.innerHTML = `
             <div class="modal-box">
