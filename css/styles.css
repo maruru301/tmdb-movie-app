@@ -167,7 +167,7 @@ img {
     display: none;
 }
 
-.movie-card-box:hover .movie-title {
+.movie-card:hover .movie-title {
     display: block;
     position: absolute;
     bottom: 0;
