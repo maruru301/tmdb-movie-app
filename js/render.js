@@ -2,6 +2,16 @@
 export const renderMovies = (data, container) => {
     let idArr = JSON.parse(localStorage.getItem('id')) || [];
 
+    // 검색 결과가 없는 경우
+    if (!data || data.length === 0) {
+        container.innerHTML = `
+            <div>
+                검색 결과가 없습니다.
+            </div>
+        `;
+        return;
+    }
+
     // 모든 카드 HTML 문자열 생성
     const movieCardsHTML = data
         .map((movie) => {
