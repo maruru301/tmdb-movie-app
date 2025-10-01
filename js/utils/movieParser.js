@@ -7,7 +7,7 @@ export const parseMovieData = (data) => ({
     overview: data.overview,
     releaseDate: data.release_date,
     runtime: data.runtime,
-    voteAverage: data.vote_average,
+    voteAverage: data.vote_average.toFixed(1), // 소수점 1자리
     director: data.credits.crew.find((p) => p.job === 'Director')?.name ?? '정보 없음',
     originalDirector: data.credits.crew.find((p) => p.job === 'Director')?.original_name ?? '정보 없음',
 });
