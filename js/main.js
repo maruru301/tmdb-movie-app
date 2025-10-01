@@ -1,44 +1,35 @@
-import { fetchMovieDetails, fetchSearchMovies, fetchTopRatedMovies } from './api.js';
-import { renderModal, renderMovies } from './render.js';
+import { closeModal, openModal } from './modal.js';
+import { filterBookmarks, toggleBookmark } from './bookmark.js';
 
-import { parseMovieData } from './utils/movieParser.js';
+import { fetchTopRatedMovies } from './api.js';
+import { handleSearch } from './search.js';
+import { renderMovies } from './render.js';
 
 const cardList = document.querySelector('.card-list');
 const searchInput = document.querySelector('#search-input');
 const searchBtn = document.querySelector('#search-btn');
 const modal = document.querySelector('.modal');
 const bookmarkFilterBtn = document.querySelector('.bookmark-filter-btn');
+const cardListTitle = document.querySelector('.card-list-title');
 const DEFAULT_PAGE = 1;
 
 // 헤더 높이만큼 body를 아래로 밀어줌
 const header = document.querySelector('header');
-const headerHeight = header.offsetHeight;
-document.body.style.paddingTop = `${headerHeight}px`;
+document.body.style.paddingTop = `${header.offsetHeight}px`;
 
 const init = async () => {
     try {
         const movies = await fetchTopRatedMovies(DEFAULT_PAGE);
         renderMovies(movies, cardList);
     } catch (err) {
-        console.error('영화 로딩 실패:', err);
+        console.error('영화 로딩 실패: ', err);
     }
 };
 
-// search btn 클릭 이벤트
+// 검색 버튼 클릭
 searchBtn.addEventListener('click', async () => {
     const query = searchInput.value.trim();
-
-    if (!query) {
-        alert('검색어를 입력해주세요');
-        return;
-    }
-
-    const movies = await fetchSearchMovies(query); // 검색 영화 데이터 가져오기
-
-    const cardListTitle = document.querySelector('.card-list-title');
-    cardListTitle.textContent = '🔎 검색 결과';
-
-    renderMovies(movies, cardList);
+    handleSearch(query, cardList, cardListTitle);
 });
 
 // 검색창에서 Enter 입력 시 검색
@@ -46,8 +37,8 @@ searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') searchBtn.click();
 });
 
-// 북마크 + 모달
-cardList.addEventListener('click', async (e) => {
+// 카드 리스트 클릭 (북마크 + 모달)
+cardList.addEventListener('click', (e) => {
     const movieCard = e.target.closest('.movie-card'); // 이벤트 위임
     if (!movieCard) return;
 
@@ -56,59 +47,22 @@ cardList.addEventListener('click', async (e) => {
     // 북마크
     const bookmarkBtn = e.target.closest('.bookmark-btn');
     if (bookmarkBtn) {
-        const bookmarkIcon = bookmarkBtn.querySelector('.bookmark-icon');
-
-        let idArr = JSON.parse(localStorage.getItem('id')) || [];
-
-        if (!idArr.includes(movieId)) {
-            // 북마크 추가
-            idArr.push(movieId);
-
-            bookmarkIcon.src = 'assets/icon-bookmark-filled.svg';
-            bookmarkBtn.classList.add('active');
-        } else {
-            // 북마크 해제
-            idArr = idArr.filter((id) => id !== movieId);
-
-            bookmarkIcon.src = 'assets/icon-bookmark-empty.svg';
-            bookmarkBtn.classList.remove('active');
-        }
-
-        localStorage.setItem('id', JSON.stringify(idArr));
+        toggleBookmark(movieId, bookmarkBtn);
         return; // 모달 띄우지 않고 종료
     }
 
-    // 모달창
-    const movieData = await fetchMovieDetails(movieId); // 영화 상세 데이터 가져오기
-    const parsedMovieData = parseMovieData(movieData);
-
-    modal.classList.remove('hidden');
-    renderModal(parsedMovieData, modal);
+    // 모달 열기
+    openModal(movieId, modal);
 });
 
-// 닫기 버튼 또는 modal 영역 클릭 시 모달창 닫기
+// 모달 닫기
 modal.addEventListener('click', (e) => {
-    if (e.target === modal || e.target.classList.contains('modal-close')) {
-        modal.classList.add('hidden');
-    }
+    closeModal(e, modal);
 });
 
 // 북마크 필터링
-bookmarkFilterBtn.addEventListener('click', async () => {
-    const idArr = JSON.parse(localStorage.getItem('id')) || [];
-
-    if (!idArr.length) {
-        alert('북마크한 영화가 없습니다!');
-        return;
-    }
-
-    // 북마크 ID별로 상세 데이터 가져오기
-    const bookmarkedMovies = await Promise.all(idArr.map((id) => fetchMovieDetails(id)));
-
-    const cardListTitle = document.querySelector('.card-list-title');
-    cardListTitle.textContent = '🔖 북마크한 영화';
-
-    renderMovies(bookmarkedMovies, cardList);
+bookmarkFilterBtn.addEventListener('click', () => {
+    filterBookmarks(cardList, cardListTitle);
 });
 
 init();
