@@ -7,6 +7,7 @@ const cardList = document.querySelector('.card-list');
 const searchInput = document.querySelector('#search-input');
 const searchBtn = document.querySelector('#search-btn');
 const modal = document.querySelector('.modal');
+const bookmarkFilterBtn = document.querySelector('.bookmark-filter-btn');
 const DEFAULT_PAGE = 1;
 
 // 헤더 높이만큼 body를 아래로 밀어줌
@@ -33,6 +34,9 @@ searchBtn.addEventListener('click', async () => {
     }
 
     const movies = await fetchSearchMovies(query); // 검색 영화 데이터 가져오기
+
+    const cardListTitle = document.querySelector('.card-list-title');
+    cardListTitle.textContent = '🔎 검색 결과';
 
     renderMovies(movies, cardList);
 });
@@ -62,16 +66,12 @@ cardList.addEventListener('click', async (e) => {
 
             bookmarkIcon.src = 'assets/icon-bookmark-filled.svg';
             bookmarkBtn.classList.add('active');
-
-            console.log('북마크 추가');
         } else {
             // 북마크 해제
             idArr = idArr.filter((id) => id !== movieId);
 
             bookmarkIcon.src = 'assets/icon-bookmark-empty.svg';
             bookmarkBtn.classList.remove('active');
-
-            console.log('북마크 해제');
         }
 
         localStorage.setItem('id', JSON.stringify(idArr));
@@ -91,6 +91,24 @@ modal.addEventListener('click', (e) => {
     if (e.target === modal || e.target.classList.contains('modal-close')) {
         modal.classList.add('hidden');
     }
+});
+
+// 북마크 필터링
+bookmarkFilterBtn.addEventListener('click', async () => {
+    const idArr = JSON.parse(localStorage.getItem('id')) || [];
+
+    if (!idArr.length) {
+        alert('북마크한 영화가 없습니다!');
+        return;
+    }
+
+    // 북마크 ID별로 상세 데이터 가져오기
+    const bookmarkedMovies = await Promise.all(idArr.map((id) => fetchMovieDetails(id)));
+
+    const cardListTitle = document.querySelector('.card-list-title');
+    cardListTitle.textContent = '🔖 북마크한 영화';
+
+    renderMovies(bookmarkedMovies, cardList);
 });
 
 init();
