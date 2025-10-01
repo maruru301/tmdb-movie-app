@@ -282,3 +282,17 @@ img {
 .hidden {
     visibility: hidden;
 }
+
+@media (max-width: 1000px) {
+    #main {
+        padding: 0 3rem;
+    }
+}
+
+@media (max-width: 620px) {
+    #header-top {
+        flex-direction: column;
+        gap: 1.2rem;
+        align-items: flex-start;
+    }
+}
